@@ -1,0 +1,9 @@
+#X-Pack的监控
+#[logstash.outputs.elasticsearchmonitoring][.monitoring-logstash] New Elasticsearch output {:class=>"LogStash::Outputs::ElasticSearchMonitoring", :hosts=>["http://elasticsearch"]}
+#[logstash.outputs.elasticsearch][main] New Elasticsearch output {:class=>"LogStash::Outputs::ElasticSearch", :hosts=>["http://elasticsearch/9200"]}
+http.host: "0.0.0.0"
+path.config: /usr/share/logstash/pipeline
+xpack.monitoring.elasticsearch.hosts: ["http://elasticsearch:9200"]
+xpack.monitoring.enabled: true
+xpack.monitoring.elasticsearch.username: logstash_system
+xpack.monitoring.elasticsearch.password: T*UebpqQGYxVlmqQApT1

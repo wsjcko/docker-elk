@@ -1,0 +1,29 @@
+version: '3'
+services:
+    elasticsearch:   
+    image: elasticsearch:7.14.1    
+    container_name: es   
+    environment:     
+      - "cluster.name=elasticsearch" #设置集群名称为elasticsearch     
+      - "discovery.type=single-node" #以单一节点模式启动     
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m" #设置使用jvm内存大小      
+      - "ELASTIC_PASSWORD=as23445"    #密码     
+      - "xpack.security.enabled=true"   
+    volumes:      
+    - ./elasticsearch/plugins:/home/docker/ek/elasticsearch/plugins #插件文件挂载      
+    - ./elasticsearch/data:/home/docker/ek/elasticsearch/data #数据文件挂载   
+    ports:      
+      - 9200:9200  
+
+    kibana:    
+      image: kibana:7.14.1   
+      container_name: kibana    
+      depends_on:      
+        - elasticsearch #kibana在elasticsearch启动之后再启动   
+      environment:      
+        - "elasticsearch.hosts=['http://es:9200']" #设置访问elasticsearch的地址     
+        - "ELASTICSEARCH_USERNAME=elastic"         
+        - "ELASTICSEARCH_PASSWORD=Zkzh@123"    #elastic密码      
+        - "I18N_LOCALE=zh-CN"                 #中文    
+      ports:         
+        - 5601:5601

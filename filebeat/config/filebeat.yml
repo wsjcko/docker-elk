@@ -1,0 +1,7 @@
+server.name: filebeat
+server.host: "0.0.0.0"
+output.elasticsearch.hosts: ["http://elasticsearch:9200"]
+output.elasticsearch.username: elastic
+output.elasticsearch.password: wsjcko@123456
+  
+setup.kibana.host: kibana:5601

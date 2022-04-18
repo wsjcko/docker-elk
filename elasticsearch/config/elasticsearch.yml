@@ -1,0 +1,11 @@
+cluster.name: "elk-cluster"
+network.host: 0.0.0.0
+
+## 利用elasticsearch自带的xpack作为权限验证功能
+xpack.security.enabled: true
+
+xpack.license.self_generated.type: trial
+
+xpack.monitoring.collection.enabled: true
+
+xpack.security.enrollment.enabled: true

@@ -1,0 +1,36 @@
+{
+    "index_patterns": "micro-*",
+    "template": {
+      "settings" : {
+          "index" : {
+            "number_of_shards" : "1",
+            "number_of_replicas" : "1"
+          }
+        },
+      "mappings" : {
+          "properties" : {
+            "@timestamp" : {
+              "type" : "date"
+            },
+            "esc.version" : {
+              "type" : "keyword"
+            },
+            "service.name" : {
+              "type" : "keyword"
+            },
+            "message" : {
+              "type" : "keyword"
+            },
+            "log.origin" : {
+              "type" : "keyword"
+            },
+            "log.logger" : {
+              "type" : "keyword"
+            }
+          }
+        }
+    },
+    "data_stream" : {
+        "hidden" : false
+    }
+  }

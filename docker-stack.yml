@@ -1,0 +1,70 @@
+version: '3.3'
+services:
+  #https://www.docker.elastic.co/
+  elasticsearch:
+    container_name: elk_elasticsearch
+    image: elasticsearch:8.1.2
+    # networks:
+    #   - elk
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+    - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ELASTIC_PASSWORD: wsjcko@123456 # 默认user: elastic  kibana展示登录
+      discovery.type: single-node
+      network.publish_host: _eth0_
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65535
+        hard: 65535
+
+  logstash:
+    container_name: elk_logstash
+    image: logstash:8.1.2
+    # networks:
+    #   - elk
+    depends_on:      
+        - elasticsearch #logstash在elasticsearch启动之后再启动   
+    ports:
+      - "5044:5044"  #elasticsearch [logstash.inputs.beats    ][main] Starting input listener {:address=>"0.0.0.0:5044"}
+      - "5000:5000" #[logstash.inputs.tcp      ][main] Starting tcp input listener {:address=>"0.0.0.0:5000", :ssl_enable=>false}
+      - "9600:9600" #logstash.agent  Successfully started Logstash API endpoint {:port=>9600, :ssl_enabled=>false}
+    volumes:
+      - type: bind
+        source: ./logstash/config/logstash.yml
+        target: /usr/share/logstash/config/logstash.yml
+        # read_only: true
+      - type: bind
+        source: ./logstash/pipeline/logstash.conf
+        target: /usr/share/logstash/pipeline/logstash.conf
+        # read_only: true
+      # - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      # - ./logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      # - ./logstash/template/elastic-template.json:/usr/share/logstash/template/elastic-template.json
+    # command: logstash -f /usr/share/logstash/pipeline/logstash.conf
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+
+  kibana:
+    container_name: elk_kibana
+    image: docker.elastic.co/kibana/kibana:8.1.2
+    # networks:
+    #   - elk
+    depends_on:      
+        - elasticsearch #kibana在elasticsearch启动之后再启动   
+    ports:
+      - "5601:5601"
+    volumes:
+      - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml
+  
+  # filebeat:
+  #   container_name: elk_filebeat
+  #   image: elastic/filebeat:8.1.2
+  #   volumes:
+  #     - ./filebeat/config/filebeat.yml:/usr/share/filebeat/config/filebeat.yml

@@ -1,0 +1,18 @@
+# 1. 下载 https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.0.0-linux-x86_64.tar.gz
+# 2. tar -zxvf filebeat-7.14.1-linux-x86_64.tar.gz
+# 3. cd filebeat-7.14.1-linux-x86_64
+# 4.备份默认的文件 mv filebeat.yml filebeat.yml.bak  
+# 5. 新建filebeat.yml 修改日志配置内容如下
+filebeat.inputs: 
+    - type: log #默认log，从日志文件读取每一行。stdin，从标准输入读取   
+      paths:    
+        - /usr/app/edu/script/logs/*.log     
+output.elasticsearch:  
+    hosts: ["192.169.56.103:9200"]  
+    username: elastic  
+    password: as23445
+# 6. filebeat启动
+# ### 后台启动生成日志文件，进入file-*.*.*目录下nohup 
+# ./filebeat -e -c filebeat.yml -d "Publish" & > nohup.out
+# ### 后台启动不生成日志
+# ./filebeat -e -c filebeat.yml -d "Publish" >/dev/null 2>&1 &

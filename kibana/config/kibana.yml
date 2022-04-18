@@ -1,0 +1,18 @@
+server.name: kibana
+server.host: 0.0.0.0
+server.shutdownTimeout: "5s"
+
+elasticsearch.hosts: ["http://elasticsearch:9200"]
+monitoring.ui.container.elasticsearch.enabled: true
+# xpack.reporting.roles.enabled: false
+## kibana_system仅作为连接elasticsearch通信用户
+elasticsearch.username: kibana_system
+elasticsearch.password: Nv1axdLy*1S0HpJ2ROOe
+
+#中文
+# i18n.locale: "zh-CN"
+
+# 防止会话在重启时失效
+xpack.security.encryptionKey: "something_at_least_32_characters"
+# 防止挂起的报告在重新启动时失败
+xpack.reporting.encryptionKey: "something_at_least_32_characters"
